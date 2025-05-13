@@ -1,0 +1,22 @@
+RewriteEngine On
+
+# Ignorar a raiz do domínio
+RewriteCond %{REQUEST_URI} ^/$ [OR]
+
+# Verificar se o arquivo solicitado é existente e não é um diretório
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+
+# Verificar se a URL já termina com .html
+RewriteCond %{REQUEST_URI} \.html$
+
+# Não aplicar reescrita para as condições acima
+RewriteRule ^ - [L]
+
+# Remover a barra final das URLs de subpastas
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [R=301,L]
+
+# Adicionar .html às URLs que não terminam com .html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !\.html$
+RewriteRule ^(.*)$ /$1.html [L,R=301]
